@@ -129,11 +129,11 @@ class OpenID_Connect_WP_Client_Wrapper {
 	/**
 	 * Implements WordPress parse_request action.
 	 *
-	 * @param \WP_Query $query The WordPress query object.
+	 * @param \WP $query The WordPress query object.
 	 *
 	 * @return void
 	 */
-	public function alternate_redirect_uri_parse_request( \WP_Query $query ) {
+	public function alternate_redirect_uri_parse_request( \WP $query ) {
 		if ( isset( $query->query_vars['openid-connect-authorize'] ) &&
 			 '1' === $query->query_vars['openid-connect-authorize'] ) {
 			$this->authentication_request_callback();
