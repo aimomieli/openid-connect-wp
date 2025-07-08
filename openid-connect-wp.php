@@ -14,9 +14,9 @@
  *
  * @wordpress-plugin
  * Plugin Name:       OpenID Connect for WP
- * Plugin URI:        https://github.com/forumone/openid-connect-wp-dist
- * Description:       Connect to an OpenID Connect identity provider using Authorization Code Flow.
- * Version:           4.0.0
+ * Plugin URI:        https://github.com/aimomieli/openid-connect-wp
+ * Description:       Connect to an OpenID Connect identity provider using Authorization Code Flow. Modified (fixed warnings) by JAM.
+ * Version:           4.0.0.JAM
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            forum1
