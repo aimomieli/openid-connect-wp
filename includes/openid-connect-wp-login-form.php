@@ -143,7 +143,7 @@ class OpenID_Connect_WP_Login_Form {
 
 		$atts = shortcode_atts(
 			array(
-				'button_text' => __( 'Login with OpenID Connect', 'openid-connect-wp' ),
+				'button_text' => __( 'Ubisecure kirjautuminen', 'openid-connect-wp' ),
 			),
 			$atts,
 			'openid_connect_generic_login_button'
@@ -157,7 +157,7 @@ class OpenID_Connect_WP_Login_Form {
 
 		$login_button = <<<HTML
 <div class="openid-connect-login-button" style="margin: 1em 0; text-align: center;">
-	<a class="button button-large" href="{$href}">{$text}</a>
+	<a class="button button-large text-sm font-semibold w-full py-3 px-4 bg-brand-color text-brand-color-text rounded-md hover:opacity-75" href="{$href}">{$text}</a>
 </div>
 HTML;
 
