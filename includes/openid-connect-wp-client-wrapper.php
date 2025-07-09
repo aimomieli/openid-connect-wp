@@ -520,40 +520,41 @@ class OpenID_Connect_WP_Client_Wrapper {
 		 * Request is authenticated and authorized - start user handling
 		 */
 		$subject_identity = $client->get_subject_identity( $id_token_claim );
-		$user = $this->get_user_by_identity( $subject_identity );
+		$user = wp_get_current_user();
+		// $user = $this->get_user_by_identity( $subject_identity );
 
 		// A pre-existing IDP mapped user wasn't found.
-		if ( ! $user ) {
-			// If linking existing users or creating new ones call the `create_new_user` method which handles both cases.
-			if ( $this->settings->link_existing_users || $this->settings->create_if_does_not_exist ) {
-				$user = $this->create_new_user( $subject_identity, $user_claim );
-				if ( is_wp_error( $user ) ) {
-					$this->error_redirect( $user );
-				}
-			} else {
-				$this->error_redirect( new \WP_Error( 'identity-not-map-existing-user', __( 'User identity is not linked to an existing WordPress user.', 'openid-connect-wp' ), $user_claim ) );
-			}
-		}
+		// if ( ! $user ) {
+		// 	// If linking existing users or creating new ones call the `create_new_user` method which handles both cases.
+		// 	if ( $this->settings->link_existing_users || $this->settings->create_if_does_not_exist ) {
+		// 		$user = $this->create_new_user( $subject_identity, $user_claim );
+		// 		if ( is_wp_error( $user ) ) {
+		// 			$this->error_redirect( $user );
+		// 		}
+		// 	} else {
+		// 		$this->error_redirect( new \WP_Error( 'identity-not-map-existing-user', __( 'User identity is not linked to an existing WordPress user.', 'openid-connect-wp' ), $user_claim ) );
+		// 	}
+		// }
 
 		// Validate the found / created user.
-		$valid = $this->validate_user( $user );
+		// $valid = $this->validate_user( $user );
 
-		if ( is_wp_error( $valid ) ) {
-			$this->error_redirect( $valid );
-		}
+		// if ( is_wp_error( $valid ) ) {
+		// 	$this->error_redirect( $valid );
+		// }
 
-		// Login the found / created user.
-		$start_time = microtime( true );
-		$this->login_user( $user, $token_response, $id_token_claim, $user_claim, $subject_identity );
-		$end_time = microtime( true );
-		// Log our success.
-		$this->logger->log( "Successful login for: {$user->user_login} ({$user->ID})", 'login-success', $end_time - $start_time );
+		// // Login the found / created user.
+		// $start_time = microtime( true );
+		// $this->login_user( $user, $token_response, $id_token_claim, $user_claim, $subject_identity );
+		// $end_time = microtime( true );
+		// // Log our success.
+		// $this->logger->log( "Successful login for: {$user->user_login} ({$user->ID})", 'login-success', $end_time - $start_time );
 
-		// Allow plugins / themes to take action once a user is logged in.
-		$start_time = microtime( true );
-		do_action( 'openid-connect-wp-user-logged-in', $user );
-		$end_time = microtime( true );
-		$this->logger->log( 'openid-connect-wp-user-logged-in', 'do_action', $end_time - $start_time );
+		// // Allow plugins / themes to take action once a user is logged in.
+		// $start_time = microtime( true );
+		// do_action( 'openid-connect-wp-user-logged-in', $user );
+		// $end_time = microtime( true );
+		// $this->logger->log( 'openid-connect-wp-user-logged-in', 'do_action', $end_time - $start_time );
 
 		// Default redirect to the homepage.
 		$redirect_url = home_url();
@@ -568,6 +569,8 @@ class OpenID_Connect_WP_Client_Wrapper {
 		if ( ! empty( $_COOKIE[ self::COOKIE_REDIRECT_KEY ] ) ) {
 			$redirect_url = esc_url_raw( wp_unslash( $_COOKIE[ self::COOKIE_REDIRECT_KEY ] ) );
 		}
+
+		set_transient('jam-vahva-tunnistautuminen-' . $user->ID, 'OK', 60);
 
 		// Only do redirect-user-back action hook when the plugin is configured for it.
 		if ( $this->settings->redirect_user_back ) {
